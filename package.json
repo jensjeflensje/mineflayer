@@ -21,7 +21,7 @@
   },
   "license": "MIT",
   "dependencies": {
-    "minecraft-data": "^3.114.0",
+    "minecraft-data": "https://github.com/jensjeflensje/node-minecraft-data/releases/download/v3.119.0-pc26.3.2/minecraft-data-3.119.0-pc26.3.2.tgz",
     "minecraft-protocol": "github:jensjeflensje/node-minecraft-protocol#pc26.3-support",
     "mojangson": "^2.0.4",
     "prismarine-biome": "^1.1.1",
@@ -51,5 +51,8 @@
     "standard": "^17.0.0",
     "standard-markdown": "^7.1.0",
     "typescript": "^5.4.5"
+  },
+  "overrides": {
+    "minecraft-data": "$minecraft-data"
   }
 }
