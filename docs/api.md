@@ -1260,8 +1260,9 @@ before doing anything though.
 
 #### "spawn"
 
-Emitted once after you log in and spawn for the first time
-and then emitted when you respawn after death.
+Emitted once after you log in and spawn for the first time,
+then when you respawn after death, and after every later login,
+for example when a proxy such as Velocity moves the bot to another server.
 
 This is usually the event that you want to listen to
 before doing anything on the server.

@@ -1155,6 +1155,25 @@ for (const supportedVersion of mineflayer.testedVersions) {
         })
       })
 
+      it('emits death when a second login lands on a server where the bot is dead', (done) => {
+        server.on('playerJoin', (client) => {
+          client.write('login', bot.test.generateLoginPacket())
+          bot.once('login', () => {
+            client.write('update_health', { health: 20, food: 20, foodSaturation: 5 })
+          })
+          bot.once('spawn', () => {
+            bot.once('death', () => {
+              assert.strictEqual(bot.isAlive, false)
+              done()
+            })
+            bot.once('login', () => {
+              client.write('update_health', { health: 0, food: 20, foodSaturation: 5 })
+            })
+            client.write('login', bot.test.generateLoginPacket())
+          })
+        })
+      })
+
       it('spawns again and sends player_loaded after a second login (proxy server switch)', (done) => {
         server.on('playerJoin', (client) => {
           let loadedPackets = 0
