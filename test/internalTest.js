@@ -1154,6 +1154,30 @@ for (const supportedVersion of mineflayer.testedVersions) {
           })
         })
       })
+
+      it('spawns again and sends player_loaded after a second login (proxy server switch)', (done) => {
+        server.on('playerJoin', (client) => {
+          let loadedPackets = 0
+          client.on('player_loaded', () => { loadedPackets++ })
+          client.write('login', bot.test.generateLoginPacket())
+          bot.once('login', () => {
+            client.write('update_health', { health: 20, food: 20, foodSaturation: 5 })
+          })
+          bot.once('spawn', () => {
+            bot.once('login', () => {
+              client.write('update_health', { health: 20, food: 20, foodSaturation: 5 })
+            })
+            bot.once('spawn', () => {
+              setTimeout(() => {
+                if (bot.supportFeature('sendsPlayerLoadedPacket')) assert.strictEqual(loadedPackets, 2)
+                assert.strictEqual(bot.isAlive, true)
+                done()
+              }, 100)
+            })
+            client.write('login', bot.test.generateLoginPacket())
+          })
+        })
+      })
     })
 
     describe('entities', () => {
